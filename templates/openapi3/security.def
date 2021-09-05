@@ -1,0 +1,92 @@
+# Authentication
+
+> Example code shows how to use the authentication tokens
+
+```javascript
+// save the tokens somewhere (localStorage, memory, where you see fit)
+// it is better not to use cookies, because they're vulnerable to XSS attacks
+let token = "";
+let refreshToken = "";
+
+function injectAuthorizationHeader(options, token) {
+  if (!token) return options;
+
+  if (options) {
+    if (options.headers) options.headers.Authorization = `bearer ${token}`;
+    else options.headers = { Authorization: `bearer ${token}` };
+  } else {
+    options = { headers: { Authorization: `bearer ${token}` } };
+  }
+
+  return options;
+}
+
+async function apiCall(url, options) {
+  // inject the token into headers as bellow (or as you see fit)
+  options = injectAuthorizationHeader(options, token);
+
+  // call the api
+  let res = await fetch(url, options);
+
+  // if the api returns status code 401, the token is missing or expired
+  if (res.status === 401) {
+    if (!refreshToken) {
+      return res.json(); // the user should be redirected to login page
+    }
+
+    const refreshRes = await fetch("https://{BASE_URL}/api/auth/refresh", {
+      method: "POST",
+      headers: {
+        Authorization: `bearer ${refreshToken}`,
+      },
+    });
+
+    // if token refreshed successfully, store the new tokens, and call the api again
+    if (refreshRes.status === 200) {
+      // you should store the new tokens instead of the old ones
+      const tokens = await refreshRes.json();
+      token = tokens.token;
+      refreshToken = tokens.refreshToken;
+
+      // call the api again
+      options = injectAuthorizationHeader(options, token);
+      res = await fetch(url, options);
+
+      return res.json();
+    } else {
+      // the refresh token is either expired or not valid, the user needs to login again
+      return res.json();
+    }
+  }
+
+  // you can handle errors in here (403, 422, etc.)
+
+  return res.json();
+}
+```
+
+> You can call this api like this:
+
+```javascript
+const res = await apiCall("<URL>", {
+  method: "POST",
+  body: {
+    /* body params */
+  },
+});
+```
+
+We use JWT tokens to allow access to the API, you send the user credentials to the login URL, and if they are correct the API will return
+two tokens, a short lived **token** that identify the user (it expires after 5 minutes), and a **refreshToken** which will be used to refresh the expired token.
+
+The API expects the token to be passed as a header **Authorization** like below:
+
+`Authorization: bearer <token>`
+
+<aside class="notice">
+You must replace <code>&lt;token&gt;</code> with token returned from the login API.
+</aside>
+
+When sending requests to the API with an expired token, the API will return a status code 401 (Unauthorized), the front-end then should send a refresh request,
+and if that succeeded, then the front-end stores the new token instead of the old ones, and re-sends the failed request.
+But if the refresh request fails, the user should be redirected to the login page.

@@ -1,0 +1,16 @@
+{
+  "name": "mun-api-doc",
+  "version": "1.0.0",
+  "main": "create_docs.js",
+  "repository": "git@github.com:lamah-co/mun-api-doc.git",
+  "author": "Mahmoud Almontasser <almontasser@outlook.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node create_docs.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.0.0",
+    "widdershins": "^4.0.1"
+  }
+}
