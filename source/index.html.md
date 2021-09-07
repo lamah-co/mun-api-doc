@@ -9,6 +9,25 @@ toc_footers:
 
 includes:
   - authentication
+  - query_strings
+  - admin
+  - users
+  - plans
+  - settings
+  - classifications
+  - subclassifications
+  - faqs
+  - regions
+  - municipalities
+  - municipality_buildings
+  - municipality_subscriptions
+  - municipality_members
+  - municipality_regions
+  - statistics
+  - requests
+  - subscriptions
+  - transactions
+  - schemas
   - errors
 
 search: true

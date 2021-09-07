@@ -121,6 +121,8 @@ const res = await fetch("https://{BASE_URL}/api/auth/firstuser", options);
 }
 ```
 
+<p class="policies">[Public]</p>
+
 This endpoint creates the first user in the system, which will be the admin by default.
 
 ### HTTP Request
@@ -172,6 +174,8 @@ const { token, refreshToken } = res.data;
 }
 ```
 
+<p class="policies">[Public]</p>
+
 This endpoint authenticates the user, and returns access tokens.
 
 ### HTTP Request
@@ -186,10 +190,6 @@ This endpoint authenticates the user, and returns access tokens.
 | password  | The password of the user |
 
 ## Refresh Token
-
-Check if the user is still valid, and not logged in from another device, and it will return new token.
-
-Make sure to set the refreshToken in the authorization header instead of the normal token.
 
 ```javascript
 const options = {
@@ -212,6 +212,12 @@ const { token, refreshToken } = res.data;
 }
 ```
 
+<p class="policies">[AnyUser]</p>
+
+Check if the user is still valid, and not logged in from another device, and it will return new token.
+
+Make sure to set the refreshToken in the authorization header instead of the normal token.
+
 ## Confirm user
 
 ```javascript
@@ -232,6 +238,8 @@ const res = await fetch("https://{BASE_URL}/api/auth/confirm", options);
   "success": true
 }
 ```
+
+<p class="policies">[AnyUser]</p>
 
 This endpoint is used to confirm the person using the API is the user who logged in.
 
@@ -263,13 +271,15 @@ const res = await fetch("https://{BASE_URL}/api/auth/logout", options);
 }
 ```
 
+<p class="policies">[AnyUser]</p>
+
 This endpoint is used to logout the current user, by invalidating his tokens, the front-end should clear the saved tokens.
 
 ### HTTP Request
 
 `POST https://{BASE_URL}/api/auth/logout`
 
-## ME
+## Me
 
 ```javascript
 const options = {
@@ -295,6 +305,8 @@ const res = await fetch("https://{BASE_URL}/api/auth/me", options);
   "deleted": false
 }
 ```
+
+<p class="policies">[AnyUser]</p>
 
 This endpoint is used to return the logged-in user's information.
 

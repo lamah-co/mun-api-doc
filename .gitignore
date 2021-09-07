@@ -28,4 +28,5 @@ ubuntu-*-console.log
 
 node_modules
 generated.md
+genereted.html.md
 yarn.lock
