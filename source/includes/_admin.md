@@ -7,7 +7,7 @@ const options = {
   method: "GET",
 };
 
-const res = await fetch("https://{BASE_URL}/api/admin/users-count", options);
+const res = await fetch("/api/admin/users-count", options);
 ```
 
 > The above command returns JSON structured like this:
@@ -31,7 +31,7 @@ This endpoint returns an array of users count in each municipality.
 
 ### HTTP Request
 
-`GET https://{BASE_URL}/api/admin/users-count`
+`GET /api/admin/users-count`
 
 ## Monthly Income
 
@@ -40,7 +40,7 @@ const options = {
   method: "GET",
 };
 
-const res = await fetch("https://{BASE_URL}/api/admin/monthly-income", options);
+const res = await fetch("/api/admin/monthly-income", options);
 ```
 
 > The above command returns JSON structured like this:
@@ -64,7 +64,7 @@ This endpoint retrieves income by month.
 
 ### HTTP Request
 
-`GET https://{BASE_URL}/api/admin/monthly-income`
+`GET /api/admin/monthly-income`
 
 ## Yearly Income
 
@@ -73,7 +73,7 @@ const options = {
   method: "GET",
 };
 
-const res = await fetch("https://{BASE_URL}/api/admin/yearly-income", options);
+const res = await fetch("/api/admin/yearly-income", options);
 ```
 
 > The above command returns JSON structured like this:
@@ -97,4 +97,4 @@ This endpoint retrieves income by year.
 
 ### HTTP Request
 
-`GET https://{BASE_URL}/api/admin/yearly-income`
+`GET /api/admin/yearly-income`

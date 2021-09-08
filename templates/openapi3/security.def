@@ -34,7 +34,7 @@ async function apiCall(url, options) {
       return res.json(); // the user should be redirected to login page
     }
 
-    const refreshRes = await fetch("https://{BASE_URL}/api/auth/refresh", {
+    const refreshRes = await fetch("/api/auth/refresh", {
       method: "POST",
       headers: {
         Authorization: `bearer ${refreshToken}`,

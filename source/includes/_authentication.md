@@ -39,7 +39,7 @@ async function apiCall(url, options) {
       return res.json(); // the user should be redirected to login page
     }
 
-    const refreshRes = await fetch("https://{BASE_URL}/api/auth/refresh", {
+    const refreshRes = await fetch("/api/auth/refresh", {
       method: "POST",
       headers: {
         Authorization: `bearer ${refreshToken}`,
@@ -98,19 +98,33 @@ But if the refresh request fails, the user should be redirected to the login pag
 
 ## Create first system user
 
+> Code samples
+
 ```javascript
-const options = {
-  method: "POST",
-  body: {
-    fullname: "Ahmed Mohamed",
-    phone: "0912345678",
-    username: "ahmed",
-    email: "ahmed@lamah.com",
-    password: "password",
-  },
+const inputBody = {
+  fullname: "Ahmed Mohamed",
+  phone: "0912345678",
+  username: "ahmed",
+  email: "ahmed@lamah.com",
+  password: "password",
+};
+const headers = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+  Authorization: "Bearer {access-token}",
 };
 
-const res = await fetch("https://{BASE_URL}/api/auth/firstuser", options);
+fetch("/api/auth/firstuser", {
+  method: "POST",
+  body: inputBody,
+  headers: headers,
+})
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (body) {
+    console.log(body);
+  });
 ```
 
 > The above command returns JSON structured like this:
@@ -127,7 +141,7 @@ This endpoint creates the first user in the system, which will be the admin by d
 
 ### HTTP Request
 
-`POST https://{BASE_URL}/api/auth/firstuser`
+`POST /api/auth/firstuser`
 
 ### Data Parameters
 
@@ -151,18 +165,30 @@ This endpoint works only once, to create the first user.
 
 > To authorize, use this code:
 
+> Code samples
+
 ```javascript
-const options = {
-  method: "POST",
-  body: {
-    email: "email@lamah.com",
-    password: "password",
-  },
+const inputBody = {
+  email: "email@lamah.com",
+  password: "password",
+};
+const headers = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+  Authorization: "Bearer {access-token}",
 };
 
-const res = await fetch("https://{BASE_URL}/api/auth/login", options);
-
-const { token, refreshToken } = res.data;
+fetch("/api/auth/login", {
+  method: "POST",
+  body: inputBody,
+  headers: headers,
+})
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (body) {
+    console.log(body);
+  });
 ```
 
 > The above command returns JSON structured like this:
@@ -180,7 +206,7 @@ This endpoint authenticates the user, and returns access tokens.
 
 ### HTTP Request
 
-`POST https://{BASE_URL}/api/auth/login`
+`POST /api/auth/login`
 
 ### DATA Parameters
 
@@ -191,16 +217,25 @@ This endpoint authenticates the user, and returns access tokens.
 
 ## Refresh Token
 
-```javascript
-const options = {
-  method: "POST",
-  headers: {
-    Authorization: "bearer <refreshToken>",
-  },
-};
-const res = await fetch("https://{BASE_URL}/api/auth/refresh", options);
+> Code samples
 
-const { token, refreshToken } = res.data;
+```javascript
+const headers = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+  Authorization: "Bearer {refresh-token}",
+};
+
+fetch("/api/auth/refresh", {
+  method: "POST",
+  headers: headers,
+})
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (body) {
+    console.log(body);
+  });
 ```
 
 > The above command returns JSON structured like this:
@@ -228,7 +263,7 @@ const options = {
   },
 };
 
-const res = await fetch("https://{BASE_URL}/api/auth/confirm", options);
+const res = await fetch("/api/auth/confirm", options);
 ```
 
 > The above command return JSON structured like this:
@@ -245,7 +280,7 @@ This endpoint is used to confirm the person using the API is the user who logged
 
 ### HTTP Request
 
-`POST https://{BASE_URL}/api/auth/confirm`
+`POST /api/auth/confirm`
 
 ### DATA Parameters
 
@@ -260,7 +295,7 @@ const options = {
   method: "POST",
 };
 
-const res = await fetch("https://{BASE_URL}/api/auth/logout", options);
+const res = await fetch("/api/auth/logout", options);
 ```
 
 > The above command return JSON structured like this:
@@ -277,7 +312,7 @@ This endpoint is used to logout the current user, by invalidating his tokens, th
 
 ### HTTP Request
 
-`POST https://{BASE_URL}/api/auth/logout`
+`POST /api/auth/logout`
 
 ## Me
 
@@ -286,7 +321,7 @@ const options = {
   method: "GET",
 };
 
-const res = await fetch("https://{BASE_URL}/api/auth/me", options);
+const res = await fetch("/api/auth/me", options);
 ```
 
 > The above command return JSON structured like this:
@@ -312,4 +347,4 @@ This endpoint is used to return the logged-in user's information.
 
 ### HTTP Request
 
-`GET https://{BASE_URL}/api/auth/me`
+`GET /api/auth/me`
